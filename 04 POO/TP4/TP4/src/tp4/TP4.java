@@ -11,10 +11,10 @@ public class TP4 {
         Empleado emp2 = new Empleado( "Matias", "Developer",2000);
         
         //Actualiza por porcentaje
-        emp1.actualizarSalario(50);
+        emp1.actualizarSalario(50.0);
         
         //actualiza por monto
-        emp2.actualizarSalario(5000.0);
+        emp2.actualizarSalario(5000);
         
         System.out.println(emp1.toString());
         System.out.println(emp2.toString());        

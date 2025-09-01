@@ -28,11 +28,11 @@ public class Empleado {
         totalEmpleados++;
     }
     
-    public void actualizarSalario(int porcentaje){
+    public void actualizarSalario(double porcentaje){
         this.salario += this.salario * porcentaje /100; 
     }
     
-    public void actualizarSalario(double monto){
+    public void actualizarSalario(int monto){
         this.salario += monto;
     }
     
