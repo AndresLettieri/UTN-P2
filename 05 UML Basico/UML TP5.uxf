@@ -1,0 +1,382 @@
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><element><id>UMLClass</id><coordinates><x>45</x><y>0</y><w>243</w><h>198</h></coordinates><panel_attributes>Pasaporte
+--
+-numero: String
+-fechaEmision: String
+-titular: Titular
+--
++Pasaporte(String, String, String, String)
++setTitular(Titular)
++mostrarFoto()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>0</y><w>243</w><h>108</h></coordinates><panel_attributes>Titular
+--
+-nombre: String
+-dni: String
+-pasaporte: Pasaporte
+--
++Titular(String, String)
++setPasaporte(Pasaporte)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>117</y><w>243</w><h>99</h></coordinates><panel_attributes>Foto
+--
+-imagen: String
+-formato: String
+--
++Foto(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>144</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+-foto</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>45</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>279</y><w>243</w><h>180</h></coordinates><panel_attributes>Celular
+--
+-imei: String
+-marca: String
+-modelo: String
+-usuario: Usuario
+
+--
++Celular(String, String, String, Bateria)
++mostrarBateria()
++setUsuario(Usuario)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>279</y><w>243</w><h>90</h></coordinates><panel_attributes>Bateria
+--
+-modelo: String
+-capacidad: double
+--
++Bateria(String, double)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>387</y><w>243</w><h>108</h></coordinates><panel_attributes>Usuario
+--
+-nombre: String
+-dni: String
+-celular: Celular
+--
++Usuario(String, String)
++setCelular(Celular)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>315</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+-bateria</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>414</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>585</y><w>243</w><h>171</h></coordinates><panel_attributes>Libro
+--
+-titulo: String
+-isbn: String
+
+--
++Libro(String, String, Autor, Editorial)
++mostrarEditorial()
++mostrarAutor()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>585</y><w>243</w><h>90</h></coordinates><panel_attributes>Autor
+--
+-nombre: String
+-nacionalidad: String
+--
++Autor(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>684</y><w>243</w><h>99</h></coordinates><panel_attributes>Editorial
+--
+-nombre: String
+-direccion: String
+--
++Editorial(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>711</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+-editorial</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>621</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-autor</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>828</y><w>243</w><h>171</h></coordinates><panel_attributes>TarjetaDeCredito
+--
+-numero: String
+-fechaVencimiento: String
+-cliente: Cliente
+
+--
++TarjetaDeCredito(String, String, Banco)
++setCliente(Cliente)
++mostrarBanco()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>855</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes><additional_attributes>10;20;100;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>828</y><w>243</w><h>108</h></coordinates><panel_attributes>Cliente
+--
+-nombre: String
+-dni: String
+-tarjetaDeCredito: TarjetaDeCredito
+--
++Cliente(String, String)
++setTarjetaDeCredito(TarjetaDeCredito)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>954</y><w>243</w><h>90</h></coordinates><panel_attributes>Banco
+--
+-nombre: String
+-cuit: String
+--
++Banco(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>954</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+-banco</panel_attributes><additional_attributes>10;20;100;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>1080</y><w>243</w><h>171</h></coordinates><panel_attributes>Computadora
+--
+-marca: String
+-numeroDeSerie: String
+-propietario: Propietario
+--
++Computadora(String, String, String, String)
++SetPropietario(Propietario)
++MostrarPlacaMadre()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>1197</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>1170</y><w>243</w><h>108</h></coordinates><panel_attributes>Propietario
+--
+-nombre: String
+-dni: String
+-computadora: Computadora
+--
++Propietario(String, String)
++SetComputadora(Computadora)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>387</x><y>1071</y><w>243</w><h>90</h></coordinates><panel_attributes>PlacaMadre
+--
+-modelo: String
+-chipset: String
+--
++PlacaMadre(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>1107</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+-placaMadre</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>1350</y><w>243</w><h>162</h></coordinates><panel_attributes>Reserva
+--
+-fecha: String
+-hora: String
+--
++Reserva(String, String, ClienteReserva, Mesa)
++mostrarMesa()
++mostrarCliente()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>1350</y><w>243</w><h>90</h></coordinates><panel_attributes>ClienteReserva
+--
+-nombre: String
+-telefono: String
+--
++ClienteReserva(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>1458</y><w>243</w><h>90</h></coordinates><panel_attributes>Mesa
+--
+-numero: int
+-capacidad: int
+--
++Mesa(int, int)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>1386</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-cliente</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>1467</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+-mesa</panel_attributes><additional_attributes>10;20;100;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>36</x><y>1611</y><w>243</w><h>162</h></coordinates><panel_attributes>Vehiculo
+--
+-patente: String
+-modelo: String
+-conductor: Conductor
+
+--
++Vehiculo(String, String, Motor)
++mostrarMotor()
++setConductor(Conductor)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>1611</y><w>243</w><h>90</h></coordinates><panel_attributes>Motor
+--
+-tipo: String
+-numeroSerie: String
+--
++Motor(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>1719</y><w>243</w><h>117</h></coordinates><panel_attributes>Conductor
+--
+-nombre: String
+-licencia: String
+-vehiculo: Vehiculo
+--
++Conductor(String, String)
++setVehiculo(Vehiculo)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>1638</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+-motor</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>1728</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>9</x><y>1908</y><w>270</w><h>162</h></coordinates><panel_attributes>Documento
+--
+-titulo: String
+-contenido: String
+--
++Documento(String, String, String, String, Usuario)
++mostrarFirmaDigital()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>1908</y><w>243</w><h>108</h></coordinates><panel_attributes>FirmaDigital
+--
+-codigoHash: String
+-fecha: String
+--
++FirmaDigital(String, String, Usuario)
++mostrarUsuario()
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>1908</y><w>243</w><h>117</h></coordinates><panel_attributes>Usuario
+--
+-nombre: String
+-email: String
+--
++Usuario(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>1935</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+-firmaDigital</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>612</x><y>1944</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1
+-usuario</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>9</x><y>2151</y><w>270</w><h>189</h></coordinates><panel_attributes>CitaMedica
+--
+-fecha: String
+-hora: String
+--
++CitaMedica(String, String, Paciente, Profesional)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>2151</y><w>243</w><h>108</h></coordinates><panel_attributes>Paciente
+--
+-nombre: String
+-obraSocial: String
+--
++Paciente(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>2277</y><w>243</w><h>108</h></coordinates><panel_attributes>Profesional
+--
+-nombre: String
+-especialidad: String
+--
++Profesional(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>2187</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-paciente</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>2286</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-profesional</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>2475</y><w>270</w><h>189</h></coordinates><panel_attributes>CuentaBancaria
+--
+-cbu: String
+-saldo: double
+-titular: Titular
+--
++CuentaBancaria(String, double, int, String)
++MostrarClaveSeguridad()
++setTitular(Titular)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>2475</y><w>243</w><h>108</h></coordinates><panel_attributes>ClaveSeguridad
+--
+-codigo: int
+-ultimaModificacion: String
+--
++ClaveSeguridad(int, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>2610</y><w>243</w><h>153</h></coordinates><panel_attributes>Titular
+--
+-nombre: String
+-dni: String
+-cuentaBancaria: CuentaBancaria
+--
++Titular(String, String)
++setCuentaBancaria(cuentaBancaria)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>261</x><y>2502</y><w>153</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+-claveSeguridad</panel_attributes><additional_attributes>10;20;150;20</additional_attributes></element><element><id>Relation</id><coordinates><x>261</x><y>2619</y><w>153</w><h>45</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+</panel_attributes><additional_attributes>10;20;150;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>2808</y><w>243</w><h>171</h></coordinates><panel_attributes>Cancion
+--
+-titulo: String
+--
++Cancion(String, Artista)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>342</x><y>2808</y><w>243</w><h>108</h></coordinates><panel_attributes>Artista
+--
+-nombre: String
+-genero: String
+--
++Artista(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>2835</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-artista</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>342</x><y>2934</y><w>243</w><h>54</h></coordinates><panel_attributes>Reproductor
+--
+--
++reproducir(Cancion):void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>2934</y><w>126</w><h>36</h></coordinates><panel_attributes>lt=&lt;..
+&lt;&lt;call&gt;&gt;</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>18</x><y>3069</y><w>243</w><h>180</h></coordinates><panel_attributes>Impuesto
+--
+-monto: double
+--
++Impuesto(double, Contribuyente)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>3069</y><w>243</w><h>108</h></coordinates><panel_attributes>Contribuyente
+--
+-nombre: String
+-cuil: String
+--
++Contribuyente(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>3195</y><w>243</w><h>54</h></coordinates><panel_attributes>Caluladora
+--
+--
++calcular(Impuesto):void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>3186</y><w>144</w><h>36</h></coordinates><panel_attributes>lt=&lt;..
+&lt;&lt;call&gt;&gt;</panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>3105</y><w>144</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-contribuyente</panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>9</x><y>3294</y><w>243</w><h>189</h></coordinates><panel_attributes>CodigoQR
+--
+-valor: String
+--
++CodigoQR(String, Usuario)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>333</x><y>3420</y><w>243</w><h>54</h></coordinates><panel_attributes>GeneradorQR
+--
+--
++generar(String, Usuario):void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>333</x><y>3294</y><w>243</w><h>108</h></coordinates><panel_attributes>Usuario
+--
+-nombre: String
+-email: String
+--
++Usuario(String, String)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>243</x><y>3321</y><w>108</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-usuario</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>243</x><y>3429</y><w>108</w><h>36</h></coordinates><panel_attributes>lt=&lt;..
+&lt;&lt;create&gt;&gt;</panel_attributes><additional_attributes>10;20;100;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>3537</y><w>243</w><h>189</h></coordinates><panel_attributes>Render
+--
+-formato: String
+--
++Render(String, Poyecto)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>342</x><y>3537</y><w>243</w><h>108</h></coordinates><panel_attributes>Proyecto
+--
+-nombre: String
+-duracionMin: int
+--
++Proyecto(String, int)
++toString(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>342</x><y>3672</y><w>243</w><h>54</h></coordinates><panel_attributes>EditorVideo
+--
+--
++exportar(String, Proyecto):void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>3681</y><w>126</w><h>36</h></coordinates><panel_attributes>lt=&lt;..
+&lt;&lt;create&gt;&gt;</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>3573</y><w>126</w><h>45</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+-proyecto</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element></diagram>
