@@ -36,7 +36,7 @@ public class Autor {
     }
     
     public void mostrarInfo(){
-        System.out.println("id de autor: " + id + ". Nombre: " + nombre + ", nacionalidad: " + nacionalidad + ".");
+        System.out.println("id de autor: " + id + ". Nombre: " + nombre + ", nacionalidad: " + nacionalidad + ".\n");
     }
 
     @Override

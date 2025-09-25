@@ -14,12 +14,12 @@ public class Inventario {
     
     public void agregarProducto(Producto p){
         productos.add(p);
-        System.out.println("Producto agregado con éxito.");
+        System.out.println("Producto agregado con éxito.\n");
     }
     
     public void listarProductos(){
         for (Producto p : productos){
-            System.out.println(p.getNombre() + ". Cantidad disponible: " + p.getCantidad() );
+            System.out.println(p.getNombre() + ". Cantidad disponible: " + p.getCantidad() + "\n" );
         }
     }
     
@@ -39,9 +39,9 @@ public class Inventario {
         Producto prodABorrar = buscarProductoPorId(id);
         if (prodABorrar != null){
         this.productos.remove(prodABorrar);
-        System.out.println("Se elimino el producto " + prodABorrar.getNombre());
+        System.out.println("Se elimino el producto " + prodABorrar.getNombre() + "\n");
         }else{
-            System.out.println("No se encontro el producto a eliminar.");
+            System.out.println("No se encontro el producto a eliminar.\n");
         }
     }
     
@@ -49,9 +49,9 @@ public class Inventario {
         Producto prodAActualizar = buscarProductoPorId(id);
         if (prodAActualizar != null){
             prodAActualizar.setCantidad(nuevaCantidad);
-            System.out.println("Se actualizó el producto " + prodAActualizar.getNombre());
+            System.out.println("Se actualizó el producto " + prodAActualizar.getNombre() +"\n");
         }else{
-            System.out.println("No se encontro el producto a actualizar");
+            System.out.println("No se encontro el producto a actualizar\n");
         }
     }
     

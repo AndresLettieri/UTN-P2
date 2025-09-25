@@ -30,11 +30,11 @@ public class Biblioteca {
     
     public void agregarLibro (String isbn, String titulo, int anioPublicacion, Autor autor){
         if (isbn.isEmpty() || titulo.isEmpty() || anioPublicacion > LocalDate.now().getYear() || autor == null){
-            System.out.println("Verifique los datos ingresados para crear un nuevo libro.");
+            System.out.println("Verifique los datos ingresados para crear un nuevo libro.\n");
         }else{
             Libro libro = new Libro(isbn, titulo, anioPublicacion, autor);
             libros.add(libro);
-            System.out.println("Libro ingresado con éxito.");
+            System.out.println("Libro ingresado con éxito.\n");
         }
     }
     
@@ -60,9 +60,9 @@ public class Biblioteca {
         Libro libroABorrar = buscarLibroPorIsbn(isbn);
         if (libroABorrar != null){
         this.libros.remove(libroABorrar);
-        System.out.println("Se elimino el libro " + libroABorrar.getTitulo());
+        System.out.println("Se elimino el libro " + libroABorrar.getTitulo() + "\n");
         }else{
-            System.out.println("No se encontro el libro a eliminar.");
+            System.out.println("No se encontro el libro a eliminar.\n");
         }
     }
     
@@ -89,7 +89,7 @@ public class Biblioteca {
 
         System.out.println("Autores disponibles:");
         for (String autor : autoresUnicos) {
-            System.out.println(autor);
+            System.out.println(autor + "\n");
         }
     }
     
