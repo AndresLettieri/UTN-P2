@@ -1,0 +1,22 @@
+INSERT INTO Productos (eliminado, nombre, marca, categoria, precio, peso, idCodigoBarras)
+VALUES
+(0, 'Camiseta Deportiva', 'Nike', 'Ropa', 29.99, 0.300, 1),
+(0, 'Sofa Deluxe', 'IKEA', 'Muebles', 399.99, 25.000, 2),
+(0, 'Laptop Gamer X1000', 'Asus', 'Electrónica', 1499.99, 2.500, 3),
+(0, 'Cargador Rápido USB-C', 'Anker', 'Accesorios', 19.99, 0.150, 4),
+(0, 'Lentes de Sol Polarizados', 'Ray-Ban', 'Accesorios', 150.00, 0.100, 5),
+(0, 'Smartphone X12', 'Samsung', 'Electrónica', 799.99, 0.250, 6),
+(0, 'Pelota de Futbol', 'Adidas', 'Deportes', 25.00, 0.450, 7),
+(0, 'Mochila Estudiante', 'Eastpak', 'Accesorios', 49.99, 0.700, 8),
+(0, 'Cámara de Seguridad', 'Ring', 'Hogar', 229.99, 1.200, 9),
+(0, 'Silla Ergonomica', 'Herman Miller', 'Muebles', 899.99, 15.000, 10),
+(0, 'Auriculares Bluetooth', 'Sony', 'Electrónica', 129.99, 0.250, 11),
+(0, 'Taza de Cerámica', 'Starbucks', 'Hogar', 12.99, 0.350, 12),
+(0, 'Reloj Inteligente', 'Apple', 'Electrónica', 399.00, 0.050, 13),
+(0, 'Pantalón de Mezclilla', 'Levis', 'Ropa', 59.99, 0.500, 14),
+(0, 'Zapatillas Running', 'Adidas', 'Deportes', 85.00, 0.800, 15),
+(0, 'Monitor Curvo 27"', 'Samsung', 'Electrónica', 379.99, 4.500, 16),
+(0, 'Cafetera Expreso', 'Delonghi', 'Hogar', 129.99, 2.500, 17),
+(0, 'Cinturón de Cuero', 'Calvin Klein', 'Ropa', 49.99, 0.200, 18),
+(0, 'Kit de Pesas', 'Bowflex', 'Deportes', 199.99, 10.000, 19),
+(0, 'Silla Gaming', 'DXRacer', 'Muebles', 599.99, 18.000, 20);
