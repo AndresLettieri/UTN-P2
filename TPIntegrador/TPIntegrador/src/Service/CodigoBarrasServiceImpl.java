@@ -2,6 +2,7 @@ package Service;
 
 import Config.DatabaseConnection;
 import Dao.CodigoBarrasDAO;
+import Dao.ProductoDAO;
 import Entities.CodigoBarras;
 
 import java.sql.Connection;
@@ -60,7 +61,12 @@ public class CodigoBarrasServiceImpl implements GenericService<CodigoBarras> {
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false);
             try {
+                // Desasociar de producto
+                ProductoDAO.desasociarCodigoBarras(id, conn);
+
+                // Baja lógica del código de barras
                 codigoBarrasDAO.eliminar(id, conn);
+
                 conn.commit();
             } catch (Exception e) {
                 conn.rollback();

@@ -2,6 +2,7 @@ package Service;
 
 import Config.DatabaseConnection;
 import Dao.CategoriaDAO;
+import Dao.ProductoDAO;
 import Entities.Categoria;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.util.List;
 public class CategoriaServiceImpl implements GenericService<Categoria> {
 
     private final CategoriaDAO categoriaDAO;
-
+    
     public CategoriaServiceImpl(CategoriaDAO categoriaDAO){
         this.categoriaDAO = categoriaDAO;
     }
@@ -60,6 +61,12 @@ public class CategoriaServiceImpl implements GenericService<Categoria> {
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false);
             try {
+                // Validar si existen productos asociados
+                if (ProductoDAO.existenProductosPorCategoria(id, conn)) {
+                    throw new IllegalStateException(
+                        "No se puede eliminar la categoría porque tiene productos asociados.");
+                }
+
                 categoriaDAO.eliminar(id, conn);
                 conn.commit();
             } catch (Exception e) {
@@ -79,7 +86,7 @@ public class CategoriaServiceImpl implements GenericService<Categoria> {
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false);
             try {
-                categoriaDAO.recuperar(id);
+                categoriaDAO.recuperar(id, conn);
                 conn.commit();
             } catch (Exception e) {
                 conn.rollback();
@@ -95,6 +102,7 @@ public class CategoriaServiceImpl implements GenericService<Categoria> {
         if (id <= 0) {
             throw new IllegalArgumentException("El ID debe ser mayor que cero.");
         }
+        
         return categoriaDAO.getById(id);
     }
 

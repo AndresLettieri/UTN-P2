@@ -2,6 +2,7 @@ package Service;
 
 import Config.DatabaseConnection;
 import Dao.ProductoDAO;
+import Dao.CodigoBarrasDAO;
 import Entities.Producto;
 
 import java.sql.Connection;
@@ -10,9 +11,11 @@ import java.util.List;
 public class ProductoServiceImpl implements GenericService<Producto> {
 
     private final ProductoDAO productoDAO;
-
-    public ProductoServiceImpl(ProductoDAO productoDAO) {
+    private final CodigoBarrasDAO codigoBarrasDAO;
+    
+    public ProductoServiceImpl(ProductoDAO productoDAO, CodigoBarrasDAO codigoBarrasDAO) {
         this.productoDAO = productoDAO;
+        this.codigoBarrasDAO = codigoBarrasDAO;
     }
 
     @Override
@@ -61,6 +64,11 @@ public class ProductoServiceImpl implements GenericService<Producto> {
             conn.setAutoCommit(false);
             try {
                 productoDAO.eliminar(id, conn);
+                // Además baja lógica del código de barras asociado
+                int idCodigoBarras = productoDAO.obtenerIdCodigoBarras(id, conn); 
+                if (idCodigoBarras > 0) {
+                    codigoBarrasDAO.eliminar(idCodigoBarras, conn);
+                 }
                 conn.commit();
             } catch (Exception e) {
                 conn.rollback();

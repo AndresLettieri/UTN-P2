@@ -13,43 +13,25 @@ import java.util.List;
 public class ProductoDAO implements GenericDAO<Producto> {
 
     @Override
-    public void insertar(Producto p) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            insertar(p, conn);
-        }
-    }
-
     public void insertar(Producto p, Connection conn) throws Exception {
-        String sql = "INSERT INTO producto (nombre, marca, categoria_id, precio, peso, codigo_barras_id, eliminado) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, false)";
+        String sql = "INSERT INTO Producto (nombre, marca, precio, peso, eliminado, idCodigoBarras, idCategoria) " +
+                     "VALUES (?, ?, ?, ?, false, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, p.getNombre());
             stmt.setString(2, p.getMarca());
-            stmt.setInt(3, p.getCategoria().getId());
-            stmt.setDouble(4, p.getPrecio());
-            stmt.setDouble(5, p.getPeso());
-            stmt.setLong(6, p.getCodigoBarras().getId());
+            stmt.setDouble(3, p.getPrecio());
+            stmt.setDouble(4, p.getPeso());
+            stmt.setLong(5, p.getCodigoBarras().getId());
+            stmt.setInt(6, p.getCategoria().getId());
 
             stmt.executeUpdate();
-
-            try (ResultSet keys = stmt.getGeneratedKeys()) {
-                if (keys.next()) {
-                    p.setId(keys.getLong(1));
-                }
-            }
         }
     }
 
     @Override
-    public void actualizar(Producto p) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            actualizar(p, conn);
-        }
-    }
-
     public void actualizar(Producto p, Connection conn) throws Exception {
-        String sql = "UPDATE producto SET nombre = ?, marca = ?, categoria_id = ?, precio = ?, peso = ?, codigo_barras_id = ? " +
+        String sql = "UPDATE producto SET nombre = ?, marca = ?, idCategoria = ?, precio = ?, peso = ?, idCodigoBarras = ? " +
                      "WHERE id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -66,12 +48,6 @@ public class ProductoDAO implements GenericDAO<Producto> {
     }
 
     @Override
-    public void eliminar(long id) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            eliminar(id, conn);
-        }
-    }
-
     public void eliminar(long id, Connection conn) throws Exception {
         String sql = "UPDATE producto SET eliminado = true WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -81,12 +57,6 @@ public class ProductoDAO implements GenericDAO<Producto> {
     }
 
     @Override
-    public void recuperar(long id) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            recuperar(id, conn);
-        }
-    }
-
     public void recuperar(long id, Connection conn) throws Exception {
         String sql = "UPDATE producto SET eliminado = false WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -107,10 +77,10 @@ public class ProductoDAO implements GenericDAO<Producto> {
             SELECT 
                 p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fecha_asignacion, cb.observaciones
-            FROM producto p
-            JOIN categoria c ON p.categoria_id = c.id
-            JOIN codigo_barras cb ON p.codigo_barras_id = cb.id
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion , cb.observaciones
+            FROM Producto p
+            JOIN Categoria c ON p.idCategoria = c.id
+            JOIN CodigoBarras cb ON p.idCodigoBarras  = cb.id
             WHERE p.eliminado = false AND cb.eliminado = false AND p.id = ?
         """;
 
@@ -137,10 +107,10 @@ public class ProductoDAO implements GenericDAO<Producto> {
             SELECT 
                 p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fecha_asignacion, cb.observaciones
-            FROM producto p
-            JOIN categoria c ON p.categoria_id = c.id
-            JOIN codigo_barras cb ON p.codigo_barras_id = cb.id
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones
+            FROM Producto p
+            JOIN Categoria c ON p.idCategoria = c.id
+            JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
             WHERE p.eliminado = false AND cb.eliminado = false
         """;
 
@@ -159,10 +129,10 @@ public class ProductoDAO implements GenericDAO<Producto> {
             SELECT 
                 p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fecha_asignacion, cb.observaciones
-            FROM producto p
-            JOIN categoria c ON p.categoria_id = c.id
-            JOIN codigo_barras cb ON p.codigo_barras_id = cb.id
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones
+            FROM Producto p
+            JOIN Categoria c ON p.idCategoria = c.id
+            JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
             WHERE p.eliminado = false AND cb.eliminado = false AND p.nombre LIKE ?
         """;
 
@@ -183,10 +153,10 @@ public class ProductoDAO implements GenericDAO<Producto> {
             SELECT 
                 p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fecha_asignacion, cb.observaciones
-            FROM producto p
-            JOIN categoria c ON p.categoria_id = c.id
-            JOIN codigo_barras cb ON p.codigo_barras_id = cb.id
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones
+            FROM Producto p
+            JOIN Categoria c ON p.idCategoria = c.id
+            JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
             WHERE p.eliminado = false AND cb.eliminado = false AND cb.valor = ?
         """;
 
@@ -199,6 +169,19 @@ public class ProductoDAO implements GenericDAO<Producto> {
             }
         }
         return null;
+    }
+    
+    public int obtenerIdCodigoBarras(long productoId, Connection conn) throws SQLException {
+        String sql = "SELECT idCodigoBarras FROM Producto WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, productoId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
     }
 
     // Mapear Producto con Categoria y CodigoBarras
@@ -226,4 +209,26 @@ public class ProductoDAO implements GenericDAO<Producto> {
 
         return p;
     }
+    
+    public static boolean existenProductosPorCategoria(long categoriaId, Connection conn) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Producto WHERE idCategoria = ? AND eliminado = false";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, categoriaId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static void desasociarCodigoBarras(long idCodigoBarras, Connection conn) throws SQLException {
+    String sql = "UPDATE Producto SET idCodigoBarras = NULL WHERE idCodigoBarras = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setLong(1, idCodigoBarras);
+        ps.executeUpdate();
+    }
+}
+
 }

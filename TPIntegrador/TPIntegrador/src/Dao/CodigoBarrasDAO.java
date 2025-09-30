@@ -13,38 +13,20 @@ import java.util.List;
 public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
 
     @Override
-    public void insertar(CodigoBarras cb) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            insertar(cb, conn);
-        }
-    }
-
     public void insertar(CodigoBarras cb, Connection conn) throws Exception {
-        String sql = "INSERT INTO codigo_barras (tipo, valor, fecha_asignacion, observaciones, eliminado) VALUES (?, ?, ?, ?, false)";
+        String sql = "INSERT INTO CodigoBarras (tipo, valor, fechaAsignacion, observaciones, eliminado) VALUES (?, ?, ?, ?, false)";
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, cb.getTipo().name());
             stmt.setString(2, cb.getValor());
             stmt.setDate(3, Date.valueOf(cb.getFechaAsignacion()));
             stmt.setString(4, cb.getObservaciones());
             stmt.executeUpdate();
-
-            try (ResultSet keys = stmt.getGeneratedKeys()) {
-                if (keys.next()) {
-                    cb.setId(keys.getLong(1));
-                }
-            }
         }
     }
 
     @Override
-    public void actualizar(CodigoBarras cb) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            actualizar(cb, conn);
-        }
-    }
-
     public void actualizar(CodigoBarras cb, Connection conn) throws Exception {
-        String sql = "UPDATE codigo_barras SET tipo = ?, valor = ?, fecha_asignacion = ?, observaciones = ? WHERE id = ?";
+        String sql = "UPDATE CodigoBarras SET tipo = ?, valor = ?, fechaAsignacion = ?, observaciones = ? WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, cb.getTipo().name());
             stmt.setString(2, cb.getValor());
@@ -56,14 +38,8 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
     }
 
     @Override
-    public void eliminar(long id) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            eliminar(id, conn);
-        }
-    }
-
     public void eliminar(long id, Connection conn) throws Exception {
-        String sql = "UPDATE codigo_barras SET eliminado = true WHERE id = ?";
+        String sql = "UPDATE CodigoBarras SET eliminado = true WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -71,14 +47,8 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
     }
 
     @Override
-    public void recuperar(long id) throws Exception {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            recuperar(id, conn);
-        }
-    }
-
     public void recuperar(long id, Connection conn) throws Exception {
-        String sql = "UPDATE codigo_barras SET eliminado = false WHERE id = ?";
+        String sql = "UPDATE CodigoBarras SET eliminado = false WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -93,7 +63,7 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
     }
 
     public CodigoBarras getById(long id, Connection conn) throws Exception {
-        String sql = "SELECT * FROM codigo_barras WHERE id = ? AND eliminado = false";
+        String sql = "SELECT * FROM CodigoBarras WHERE id = ? AND eliminado = false";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -113,7 +83,7 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
     }
 
     public List<CodigoBarras> getAll(Connection conn) throws Exception {
-        String sql = "SELECT * FROM codigo_barras WHERE eliminado = false";
+        String sql = "SELECT * FROM CodigoBarras WHERE eliminado = false";
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             List<CodigoBarras> lista = new ArrayList<>();
@@ -131,7 +101,7 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
     }
 
     public List<CodigoBarras> buscarPorValor(String filtro, Connection conn) throws Exception {
-        String sql = "SELECT * FROM codigo_barras WHERE valor LIKE ? AND eliminado = false";
+        String sql = "SELECT * FROM CodigoBarras WHERE valor LIKE ? AND eliminado = false";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + filtro + "%");
             try (ResultSet rs = stmt.executeQuery()) {
