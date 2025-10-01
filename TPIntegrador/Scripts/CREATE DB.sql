@@ -24,7 +24,7 @@ CREATE TABLE Producto (
     precio DECIMAL(10,3) NOT NULL,
     peso DECIMAL(10,3),
     eliminado BOOLEAN NOT NULL DEFAULT FALSE,
-    idCodigoBarras BIGINT NOT NULL UNIQUE,
+    idCodigoBarras BIGINT UNIQUE,
     idCategoria BIGINT NOT NULL,
     CONSTRAINT fk_producto_codigobarras
         FOREIGN KEY (idCodigoBarras) REFERENCES CodigoBarras(id),
@@ -37,4 +37,5 @@ ON Producto(idCategoria, eliminado);
 
 CREATE INDEX idx_producto_eliminado
 ON Producto(eliminado);
+
 

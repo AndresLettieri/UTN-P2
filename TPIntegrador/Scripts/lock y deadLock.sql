@@ -1,0 +1,27 @@
+--LOCK
+--SESION A:
+START TRANSACTION;
+
+UPDATE producto SET precio = 1000 WHERE id = 100000;
+
+--SESION B:
+
+UPDATE producto SET precio = 2000 WHERE id = 100000;
+
+--DEADLOCK
+
+--SESION A:
+
+START TRANSACTION;
+
+UPDATE producto SET precio = 1000 WHERE id = 100000;
+
+UPDATE producto SET precio = 2000 WHERE id = 100001;
+
+
+--SESION B:
+START TRANSACTION;
+
+UPDATE producto SET precio = 1000 WHERE id = 100001;
+
+UPDATE producto SET precio = 2000 WHERE id = 100000;
