@@ -1,0 +1,121 @@
+<diagram program="umletino" version="15.1"><zoom_level>2</zoom_level><help_text>lt=&lt;-
+1     0..*
+
+</help_text><element><id>UMLClass</id><coordinates><x>194</x><y>332</y><w>42</w><h>38</h></coordinates><panel_attributes>Producto
+--
++id: long
++eliminado: boolean
++nombre: String
++marca: String
++precio: double
++peso: double
++categoria: Categoria
++codigoBarras: CodigoBarras
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>256</x><y>332</y><w>42</w><h>38</h></coordinates><panel_attributes>CodigoBarras
+--
++id: long
++eliminado: boolean
++tipo: TipoCodigoBarras
++valor: String
++fechaAsignacion: LocalDate
++observaciones: String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>194</x><y>388</y><w>42</w><h>38</h></coordinates><panel_attributes>Categoria
+--
++id: long
++eliminado: boolean
++nombre: String
++descripcion: String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>308</x><y>290</y><w>42</w><h>38</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+TipoCodigoBarras
+--
+EAN13
+EAN8
+UPC
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>334</y><w>26</w><h>10</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=1
+
+</panel_attributes><additional_attributes>110;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>368</y><w>10</w><h>24</h></coordinates><panel_attributes>lt=-
+m2=1
+m1=0..*
+</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>308</x><y>332</y><w>42</w><h>38</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+GenericDAO&lt;T&gt;
+--
++insertar(t:T, c:Connection)
++actualizar(t:T, c:Connection)
++eliminar(id:long, c:Connection)
++recuperar(id:long, c:Connection)
++getById(id:long): T
++getAll(): List&lt;T&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>302</x><y>392</y><w>42</w><h>38</h></coordinates><panel_attributes>ProductoDAO
+--
++insertar(p:Producto, c:Connection)
++actualizar(p:Producto, c:Connection)
++eliminar(id:long, c:Connection)
++recuperar(id:long, c:Connection)
++getById(id:long): Producto
++getAll(): List&lt;Producto&gt;
++buscarPorNombre(q:String, c:Connection): List&lt;Producto&gt;
++buscarPorValorCodigoBarras(v:String, c:Connection): Producto
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>244</x><y>392</y><w>42</w><h>38</h></coordinates><panel_attributes>CodigoBarrasDAO
+--
++insertar(cb:CodigoBarras, c:Connection)
++actualizar(cb:CodigoBarras, c:Connection)
++eliminar(id:long, c:Connection)
++recuperar(id:long, c:Connection)
++getById(id:long): CodigoBarras
++getAll(): List&lt;CodigoBarras&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>314</x><y>502</y><w>42</w><h>38</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+GenericService&lt;T&gt;
+--
++insertar(t:T)
++actualizar(t:T)
++eliminar(id:long)
++recuperar(id:long)
++getById(id:long): T
++getAll(): List&lt;T&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>358</x><y>392</y><w>42</w><h>38</h></coordinates><panel_attributes>CategoriaDAO
+--
++insertar(c:Categoria, c2:Connection)
++actualizar(c:Categoria, c2:Connection)
++eliminar(id:long, c2:Connection)
++recuperar(id:long, c2:Connection)
++getById(id:long): Categoria
++getAll(): List&lt;Categoria&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>302</x><y>442</y><w>42</w><h>38</h></coordinates><panel_attributes>ProductoServiceImpl
+--
++insertar(p:Producto)
++actualizar(p:Producto)
++eliminar(id:long)
++recuperar(id:long)
++getById(id:long): Producto
++getAll(): List&lt;Producto&gt;
++buscarPorNombre(q:String): List&lt;Producto&gt;
++buscarPorValorCodigoBarras(v:String): Producto
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>374</x><y>470</y><w>42</w><h>38</h></coordinates><panel_attributes>CategoriaServiceImpl
+--
++insertar(c:Categoria)
++actualizar(c:Categoria)
++eliminar(id:long)
++recuperar(id:long)
++getById(id:long): Categoria
++getAll(): List&lt;Categoria&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>232</x><y>532</y><w>42</w><h>38</h></coordinates><panel_attributes>DatabaseConnection
+--
++getConnection(): Connection
++closeConnection(): void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>238</x><y>590</y><w>42</w><h>38</h></coordinates><panel_attributes>Main
+--
++main(args:String[]): void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>314</x><y>586</y><w>42</w><h>38</h></coordinates><panel_attributes>AppMenu
+--
++main(args:String[]): void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>342</y><w>26</w><h>22</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>110;10;50;10;50;90;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>268</x><y>428</y><w>38</w><h>36</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;160;170;160</additional_attributes></element><element><id>Relation</id><coordinates><x>320</x><y>428</y><w>6</w><h>18</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>224</x><y>368</y><w>106</w><h>28</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;70;510;70;510;120</additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>368</y><w>6</w><h>28</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>228</x><y>424</y><w>150</w><h>20</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;120;70;730;80;730;40</additional_attributes></element><element><id>Relation</id><coordinates><x>284</x><y>368</y><w>52</w><h>48</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>240;10;240;50;40;50;40;220;10;220</additional_attributes></element><element><id>Relation</id><coordinates><x>336</x><y>368</y><w>6</w><h>28</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>348</x><y>362</y><w>32</w><h>34</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;140;10;140;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>242</x><y>474</y><w>42</w><h>38</h></coordinates><panel_attributes>CodigoBarrasServiceImpl
+--
++insertar(cb:CodigoBarras)
++actualizar(cb:CodigoBarras)
++eliminar(id:long)
++recuperar(id:long)
++getById(id:long): CodigoBarras
++getAll(): List&lt;CodigoBarras&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>428</y><w>6</w><h>50</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;230</additional_attributes></element><element><id>Relation</id><coordinates><x>398</x><y>418</y><w>16</w><h>56</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;60;10;60;260</additional_attributes></element><element><id>Relation</id><coordinates><x>278</x><y>510</y><w>40</w><h>84</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;40;400;180;400</additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>506</y><w>46</w><h>96</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>210;10;210;460;10;460</additional_attributes></element><element><id>Relation</id><coordinates><x>302</x><y>478</y><w>26</w><h>112</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;330;110;540</additional_attributes></element><element><id>Relation</id><coordinates><x>278</x><y>610</y><w>40</w><h>6</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>180;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>274</x><y>308</y><w>36</w><h>28</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>160;10;10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>332</x><y>478</y><w>6</w><h>28</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>282</x><y>502</y><w>36</w><h>6</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>354</x><y>494</y><w>24</w><h>26</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>100;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>508</y><w>6</w><h>26</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>506</y><w>114</w><h>58</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;270;540;260;550;10</additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>470</y><w>34</w><h>86</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;410;110;410;100;10;150;10</additional_attributes></element></diagram>
