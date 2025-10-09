@@ -109,13 +109,19 @@ public class CodigoBarrasServiceImpl implements GenericService<CodigoBarras> {
         return codigoBarrasDAO.getAll();
     }
 
-    public List<CodigoBarras> buscarPorValor(String filtro) throws Exception {
+    public List<CodigoBarras> codigoBarrasDisponibles() throws Exception {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            return codigoBarrasDAO.codigoBarrasDisponibles(conn);
+        }
+    }
+    
+    public CodigoBarras buscarPorValor(String filtro) throws Exception {
         if (filtro == null || filtro.isBlank()) {
             throw new IllegalArgumentException("El filtro de búsqueda no puede estar vacío.");
         }
         return codigoBarrasDAO.buscarPorValor(filtro);
     }
-
+    
     // Validaciones comunes para insertar/actualizar
     private void validarCodigoBarras(CodigoBarras cb) {
         if (cb.getTipo() == null) {

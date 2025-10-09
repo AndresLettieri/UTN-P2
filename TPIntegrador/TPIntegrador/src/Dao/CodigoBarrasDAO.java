@@ -1,7 +1,6 @@
 package Dao;
 
 import Config.DatabaseConnection;
-import Config.TransactionManager;
 import Entities.CodigoBarras;
 import Entities.TipoCodigoBarras;
 
@@ -24,6 +23,13 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
                 stmt.setNull(3, java.sql.Types.DATE);
             stmt.setString(4, cb.getObservaciones());
             stmt.executeUpdate();
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    cb.setId(generatedKeys.getInt(1)); 
+                } else {
+                    throw new Exception("No se pudo obtener el ID generado para la categoría.");
+                }
+            }
         }
     }
 

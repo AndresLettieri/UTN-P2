@@ -184,8 +184,8 @@ public class ProductoDAO implements GenericDAO<Producto> {
         List<String> lista = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
-                String nombre, marca, categoria = "";
-                long id = 0;
+                String nombre, marca, categoria;
+                long id;
                 while (rs.next()) {
                     nombre = rs.getString("nombre");
                     marca = rs.getString("marca");
@@ -204,8 +204,8 @@ public class ProductoDAO implements GenericDAO<Producto> {
         List<String> lista = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
-                String nombre = "";
-                int cantidad = 0;
+                String nombre;
+                int cantidad;
                 while (rs.next()) {
                     nombre = rs.getString("nombre");
                     cantidad = rs.getInt("cantidad");
