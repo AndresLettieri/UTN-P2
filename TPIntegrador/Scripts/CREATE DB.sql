@@ -12,7 +12,7 @@ CREATE TABLE CodigoBarras (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     tipo VARCHAR(10) NOT NULL,
     valor VARCHAR(20) NOT NULL UNIQUE,
-    fechaAsignacion DATE NOT NULL,
+    fechaAsignacion DATE,
     observaciones VARCHAR(255),
     eliminado BOOLEAN NOT NULL DEFAULT FALSE
 );
