@@ -87,6 +87,6 @@ public class CategoriaDAO implements GenericDAO<Categoria> {
         int id = rs.getInt("id");
         String nombre = rs.getString("nombre");
         String descripcion = rs.getString("descripcion");
-        return new Categoria(nombre, descripcion);
+        return new Categoria(id, nombre, descripcion);
     }
 }

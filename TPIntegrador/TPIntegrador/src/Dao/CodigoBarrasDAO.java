@@ -18,7 +18,10 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, cb.getTipo().name());
             stmt.setString(2, cb.getValor());
-            stmt.setDate(3, Date.valueOf(cb.getFechaAsignacion()));
+            if(cb.getFechaAsignacion() != null)
+                stmt.setDate(3, Date.valueOf(cb.getFechaAsignacion()));
+            else
+                stmt.setNull(3, java.sql.Types.DATE);
             stmt.setString(4, cb.getObservaciones());
             stmt.executeUpdate();
         }
@@ -93,25 +96,37 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
             return lista;
         }
     }
+    
+    
+    public List<CodigoBarras> codigoBarrasDisponibles(Connection conn) throws Exception {
+        String sql = "SELECT * FROM vw_CodigoBarrasDisponibles order by valor";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            List<CodigoBarras> lista = new ArrayList<>();
+            while (rs.next()) {
+                lista.add(mapRow(rs));
+            }
+            return lista;
+        }
+    }
 
-    public List<CodigoBarras> buscarPorValor(String filtro) throws Exception {
+    public CodigoBarras buscarPorValor(String filtro) throws Exception {
         try (Connection conn = DatabaseConnection.getConnection()) {
             return buscarPorValor(filtro, conn);
         }
     }
 
-    public List<CodigoBarras> buscarPorValor(String filtro, Connection conn) throws Exception {
-        String sql = "SELECT * FROM CodigoBarras WHERE valor LIKE ? AND eliminado = false";
+    public CodigoBarras buscarPorValor(String filtro, Connection conn) throws Exception {
+        String sql = "SELECT * FROM CodigoBarras WHERE valor = ? AND eliminado = false";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "%" + filtro + "%");
+            stmt.setString(1,filtro);
             try (ResultSet rs = stmt.executeQuery()) {
-                List<CodigoBarras> lista = new ArrayList<>();
-                while (rs.next()) {
-                    lista.add(mapRow(rs));
+                if (rs.next()) {
+                    return mapRow(rs);
                 }
-                return lista;
             }
         }
+        return null;
     }
 
     // Mapea una fila del ResultSet a un objeto CodigoBarras
@@ -120,8 +135,12 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
         String tipoStr = rs.getString("tipo");
         TipoCodigoBarras tipo = TipoCodigoBarras.valueOf(tipoStr);
         String valor = rs.getString("valor");
-        LocalDate fecha = rs.getDate("fecha_asignacion").toLocalDate();
+        LocalDate fecha = null;
+        if (rs.getDate("fechaasignacion")!= null )
+            fecha = rs.getDate("fechaasignacion").toLocalDate();
         String obs = rs.getString("observaciones");
-        return new CodigoBarras(id, tipo, valor, fecha, obs);
+        boolean eliminado = rs.getBoolean("eliminado");
+        
+        return new CodigoBarras(id, tipo, valor, eliminado, fecha, obs);
     }
 }

@@ -7,6 +7,7 @@ import Entities.Producto;
 import Entities.TipoCodigoBarras;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,10 @@ public class ProductoDAO implements GenericDAO<Producto> {
             stmt.setString(2, p.getMarca());
             stmt.setDouble(3, p.getPrecio());
             stmt.setDouble(4, p.getPeso());
-            stmt.setLong(5, p.getCodigoBarras().getId());
+            if (p.getCodigoBarras() != null)
+                stmt.setLong(5, p.getCodigoBarras().getId());
+            else
+                stmt.setNull(5, Types.BIGINT);
             stmt.setInt(6, p.getCategoria().getId());
 
             stmt.executeUpdate();
@@ -40,7 +44,10 @@ public class ProductoDAO implements GenericDAO<Producto> {
             stmt.setInt(3, p.getCategoria().getId());
             stmt.setDouble(4, p.getPrecio());
             stmt.setDouble(5, p.getPeso());
-            stmt.setLong(6, p.getCodigoBarras().getId());
+            if (p.getCodigoBarras() != null)
+                stmt.setLong(6, p.getCodigoBarras().getId());
+            else
+                stmt.setNull(6, Types.BIGINT);
             stmt.setLong(7, p.getId());
 
             stmt.executeUpdate();
@@ -75,13 +82,13 @@ public class ProductoDAO implements GenericDAO<Producto> {
     public Producto getById(long id, Connection conn) throws Exception {
         String sql = """
             SELECT 
-                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
+                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso, p.eliminado as p_eliminado,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion , cb.observaciones
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion , cb.observaciones, cb.eliminado as cb_eliminado
             FROM Producto p
-            JOIN Categoria c ON p.idCategoria = c.id
-            JOIN CodigoBarras cb ON p.idCodigoBarras  = cb.id
-            WHERE p.eliminado = false AND cb.eliminado = false AND p.id = ?
+            INNER JOIN Categoria c ON p.idCategoria = c.id
+            LEFT JOIN CodigoBarras cb ON p.idCodigoBarras  = cb.id
+            WHERE p.eliminado = false AND p.id = ?
         """;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -105,12 +112,12 @@ public class ProductoDAO implements GenericDAO<Producto> {
     public List<Producto> getAll(Connection conn) throws Exception {
         String sql = """
             SELECT 
-                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
+                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso, p.eliminado as p_eliminado,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones, cb.eliminado as cb_eliminado
             FROM Producto p
-            JOIN Categoria c ON p.idCategoria = c.id
-            JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
+            INNER JOIN Categoria c ON p.idCategoria = c.id
+            LEFT JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
             WHERE p.eliminado = false AND cb.eliminado = false
         """;
 
@@ -127,13 +134,13 @@ public class ProductoDAO implements GenericDAO<Producto> {
     public List<Producto> buscarPorNombre(String filtro, Connection conn) throws Exception {
         String sql = """
             SELECT 
-                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
+                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso, p.eliminado as p_eliminado,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones, cb.eliminado as cb_eliminado
             FROM Producto p
-            JOIN Categoria c ON p.idCategoria = c.id
-            JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
-            WHERE p.eliminado = false AND cb.eliminado = false AND p.nombre LIKE ?
+            INNER JOIN Categoria c ON p.idCategoria = c.id
+            LEFT JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
+            WHERE p.eliminado = false AND p.nombre LIKE ?
         """;
 
         List<Producto> lista = new ArrayList<>();
@@ -151,12 +158,12 @@ public class ProductoDAO implements GenericDAO<Producto> {
     public Producto buscarPorValorCodigoBarras(String valor, Connection conn) throws Exception {
         String sql = """
             SELECT 
-                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso,
+                p.id AS p_id, p.nombre AS p_nombre, p.marca AS p_marca, p.precio, p.peso, p.eliminado as p_eliminado,
                 c.id AS c_id, c.nombre AS c_nombre, c.descripcion AS c_descripcion,
-                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones
+                cb.id AS cb_id, cb.tipo, cb.valor, cb.fechaAsignacion, cb.observaciones, cb.eliminado as cb_eliminado
             FROM Producto p
-            JOIN Categoria c ON p.idCategoria = c.id
-            JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
+            INNER JOIN Categoria c ON p.idCategoria = c.id
+            INNER JOIN CodigoBarras cb ON p.idCodigoBarras = cb.id
             WHERE p.eliminado = false AND cb.eliminado = false AND cb.valor = ?
         """;
 
@@ -170,6 +177,47 @@ public class ProductoDAO implements GenericDAO<Producto> {
         }
         return null;
     }
+    
+    public List<String> productosSinCodigo(Connection conn) throws Exception {
+        String sql = " SELECT * FROM vw_ProductoSinCodigoBarras";
+
+        List<String> lista = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                String nombre, marca, categoria = "";
+                long id = 0;
+                while (rs.next()) {
+                    nombre = rs.getString("nombre");
+                    marca = rs.getString("marca");
+                    categoria = rs.getString("categoria");
+                    id = rs.getInt("id");
+                    lista.add("ID: " + id + ". Nombre: " + nombre + ". Marca: " + marca + ". Categoria: " + categoria + ".");
+                }
+            }
+        }
+        return lista;
+    }
+    
+    public List<String> productosDuplicados(Connection conn) throws Exception {
+        String sql = " SELECT * FROM vw_NombreProductoDuplicado";
+
+        List<String> lista = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                String nombre = "";
+                int cantidad = 0;
+                while (rs.next()) {
+                    nombre = rs.getString("nombre");
+                    cantidad = rs.getInt("cantidad");
+                    lista.add("Nombre: " + nombre + ". Cantidad: " + cantidad + ".");
+                }
+            }
+        }
+        return lista;
+    }
+    
+    
+    
     
     public int obtenerIdCodigoBarras(long productoId, Connection conn) throws SQLException {
         String sql = "SELECT idCodigoBarras FROM Producto WHERE id = ?";
@@ -191,22 +239,33 @@ public class ProductoDAO implements GenericDAO<Producto> {
         String marca = rs.getString("p_marca");
         double precio = rs.getDouble("precio");
         double peso = rs.getDouble("peso");
-
+        boolean eliminadoP = rs.getBoolean("p_eliminado");
+        
+        
+        int catId = rs.getInt(("c_id"));
         String catNombre = rs.getString("c_nombre");
         String catDescripcion = rs.getString("c_descripcion");
-        Categoria categoria = new Categoria(catNombre, catDescripcion);
-
+        Categoria categoria = new Categoria(catId, catNombre, catDescripcion);
+        
+        Producto p = new Producto(id, nombre, marca,eliminadoP, categoria, precio, peso);
+        
         long cbId = rs.getLong("cb_id");
-        TipoCodigoBarras tipo = TipoCodigoBarras.valueOf(rs.getString("tipo"));
-        String valor = rs.getString("valor");
-        Date fecha = rs.getDate("fecha_asignacion");
-        String obs = rs.getString("observaciones");
+            
+        //Si es cero no tiene codigo de barras asignado
+        if(cbId != 0){
+            
+            TipoCodigoBarras tipo = TipoCodigoBarras.valueOf(rs.getString("tipo"));
+            String valor = rs.getString("valor");
+            LocalDate fecha = null;
+            if (rs.getDate("fechaasignacion")!= null )
+                fecha = rs.getDate("fechaasignacion").toLocalDate();
+            String obs = rs.getString("observaciones");
+            boolean eliminadoCB = rs.getBoolean("cb_eliminado");
 
-        CodigoBarras cb = new CodigoBarras(cbId, tipo, valor, fecha.toLocalDate(), obs);
-
-        Producto p = new Producto(id, nombre, marca, categoria, precio, peso);
-        p.setCodigoBarras(cb);
-
+            CodigoBarras cb = new CodigoBarras(cbId, tipo, valor, eliminadoCB, fecha, obs);
+            p.setCodigoBarras(cb);
+        }
+        
         return p;
     }
     
