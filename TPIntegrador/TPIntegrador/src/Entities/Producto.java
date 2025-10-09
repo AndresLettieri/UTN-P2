@@ -14,8 +14,19 @@ public class Producto extends Base {
     private static final int MAX_NOMBRE_LENGTH = 120;
     
     
-    public Producto(long id, String nombre, String marca, Categoria categoria, double precio, double peso) {
-        super(id, false);
+    //constructor para nuevos productos 
+    public Producto(String nombre, String marca, Categoria categoria, double precio, double peso) {
+        super();
+        this.nombre = nombre;
+        this.marca = marca;
+        this.categoria = categoria;
+        this.precio = precio;
+        this.peso = peso;
+    }
+    
+    //constructor para recuperar productos ya creados en base    
+    public Producto(long id,  String nombre, String marca, boolean eliminado, Categoria categoria, double precio, double peso) {
+        super(id, eliminado);
         this.nombre = nombre;
         this.marca = marca;
         this.categoria = categoria;
@@ -81,16 +92,18 @@ public class Producto extends Base {
 
     @Override
     public String toString() {
-        return "Producto{" + 
-                "id=" + getId() + 
-                "eliminado=" + isEliminado() +
-                "nombre=" + nombre 
-                + ", marca=" + marca 
-                + ", categoria=" + categoria.getNombre()
-                + ", precio=" + precio 
-                + ", peso=" + peso 
-                + ", codigoBarras=" + codigoBarras + 
-                '}';
+        String codBarras = "Sin asignar";
+        if (codigoBarras != null)
+            codBarras = codigoBarras.getValor();
+        return "Producto: " + 
+                "id:" + getId() + 
+                ", eliminado:" + isEliminado() +
+                ", nombre:" + nombre 
+                + ", marca:" + marca 
+                + ", categoria:" + categoria.getNombre()
+                + ", precio:" + precio 
+                + ", peso:" + peso 
+                + ", codigoBarras:" + codBarras;
     }
     
     

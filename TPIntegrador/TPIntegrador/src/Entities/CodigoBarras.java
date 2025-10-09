@@ -14,8 +14,18 @@ public class CodigoBarras extends Base {
     private static final int MAX_VALOR_LENGTH = 20;
     private static final int MAX_OBSERVACIONES_LENGTH = 255;
     
-    public CodigoBarras(long id, TipoCodigoBarras tipo, String valor, LocalDate fechaAsignacion, String observaciones) {
-        super(id, false);
+    //constructor para nuevos codigos de barras
+    public CodigoBarras(TipoCodigoBarras tipo, String valor, LocalDate fechaAsignacion, String observaciones) {
+        super();
+        this.tipo = tipo;
+        this.valor = valor;
+        this.fechaAsignacion = fechaAsignacion;
+        this.observaciones = observaciones;
+    }
+      
+    //constructor para recuperar codigos de barras ya creados en base    
+    public CodigoBarras(long id, TipoCodigoBarras tipo, String valor, boolean eliminado, LocalDate fechaAsignacion, String observaciones) {
+        super(id, eliminado);
         this.tipo = tipo;
         this.valor = valor;
         this.fechaAsignacion = fechaAsignacion;
@@ -72,14 +82,13 @@ public class CodigoBarras extends Base {
 
     @Override
     public String toString() {
-        return "CodigoBarras{" 
-                + "id=" + getId()  + '\''
-                + ", eliminado=" + isEliminado() + '\''
-                + ", tipo=" + tipo + '\''
-                + ", valor=" + valor + '\''
-                + ", fechaAsignacion=" + fechaAsignacion + '\''
-                + ", observaciones=" + observaciones + 
-                '}';
+        return "CodigoBarras: " 
+                + "id=" + getId()  
+                + ", eliminado=" + isEliminado() 
+                + ", tipo=" + tipo 
+                + ", valor=" + valor 
+                + ", fechaAsignacion=" + fechaAsignacion
+                + ", observaciones=" + observaciones;
     }
     
     
