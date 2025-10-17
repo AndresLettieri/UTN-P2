@@ -68,7 +68,7 @@ public class TP8 {
             int edad = Integer.parseInt(sc.nextLine().trim());
             if (edad < 0 || edad > 120)
             throw new EdadInvalidaException();
-            System.out.println("La edad es valida");
+                System.out.println("La edad es valida");
         } catch (NumberFormatException nfe){
             System.out.println("Ingrese solo números.");
         } catch (EdadInvalidaException e) {
