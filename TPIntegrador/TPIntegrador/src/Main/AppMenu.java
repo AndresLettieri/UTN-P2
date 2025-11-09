@@ -111,45 +111,198 @@ public class AppMenu {
     }
 
 
-    //Crear un producto 
-    private static void productoCrear() throws Exception {
+        //Crear un producto 
+        private static void productoCrear() throws Exception {
+        System.out.println("\nCreando producto...");
+        System.out.print("Ingrese nombre del producto: ");
+        String nombre = sc.nextLine().trim();
+        System.out.print("Ingrese marca (opcional): ");
+        String marca = sc.nextLine().trim();
+        System.out.print("Ingrese precio: ");
+        double precio = leerDouble();
+        System.out.print("ingrese Peso (opcional): ");
+        double peso = leerDouble();
         
-    }
+        Categoria categoria = categoriaCarga();
+        
+        Producto p = new Producto();
+        p.setNombre(nombre);
+        p.setMarca(marca);
+        p.setPrecio(precio);
+        p.setPeso(peso);
+        p.setCategoria(categoria);
 
-    //Listar todos los productos activos (no eliminados)
-    private static void productosListar() throws Exception {
+        System.out.print("¿Desea asignar un código de barras para el producto? (S/N)");
+        if (sc.nextLine().trim().equalsIgnoreCase("S") ){
+            CodigoBarras codigoBarras = new CodigoBarras();
+            System.out.print("¿Desea utilizar un código existente? (S/N) ") ;
+            if (sc.nextLine().trim().equalsIgnoreCase("S") ){
+                System.out.print("Ingrese valor del codigo de barras: ");
+                codigoBarras = codigoValidarExistenteLibre();
+            }
+            else{
+                System.out.print("Ingrese tipo (EAN13/EAN8/UPC): ");
+                TipoCodigoBarras tipo = TipoCodigoBarras.valueOf(sc.nextLine().trim().toUpperCase());
+                System.out.print("Ingrese valor del código: ");
+                String valor = sc.nextLine().trim();
+                System.out.print("Observaciones (opcional): ");
+                String obs = sc.nextLine().trim();
+
+                codigoBarras.setTipo(tipo);
+                codigoBarras.setValor(valor);
+                codigoBarras.setFechaAsignacion(LocalDate.now());
+                codigoBarras.setObservaciones(obs);
+                }
+            //asignamos el codigo al producto
+            p.setCodigoBarras(codigoBarras);
+        }
         
+        productoService.insertar(p);
+
+        System.out.println("Producto creado correctamente.");
     }
+        
     
-    //Actualiza producto
-    private static void productoActualizar() throws Exception {
-       
-    }
+
+        //Listar todos los productos activos (no eliminados) te va a mostrar de a 100 productos, si necesitas ver otros 100 hay que aceptar.
+         private static void productosListar() throws Exception {
+            List<Producto> lista = productoService.getAll();
+
+            if (lista.isEmpty()) {
+                System.out.println("No existen productos activos.");
+                return;
+            }
+
+            final int LIMITE = 100;
+            int total = lista.size();
+            int indice = 0;
+
+            while (indice < total) {
+                int hasta = Math.min(indice + LIMITE, total);
+
+                for (int i = indice; i < hasta; i++) {
+                    System.out.println(lista.get(i).toString());
+                }
+
+                indice = hasta;
+
+                if (indice < total) {
+                    System.out.print("Desea ver los proximos " + LIMITE + " registros? (S/N): ");
+                    String respuesta = sc.nextLine().trim();
+                    if (!respuesta.equalsIgnoreCase("s")) {
+                        break;
+                    }
+                }
+            }
+        }
+
+
     
-    //baja logica del producto
-    private static void productoEliminar() throws Exception {
-        
+        //Actualiza producto
+        private static void productoActualizar() throws Exception {
+        System.out.print("Id del producto a actualizar: ");
+        long id = leerInt();
+        Producto p = productoService.getById(id);
+        if (p == null) {
+            System.out.println("No se encontro el producto.");
+            return;
+        }
+
+        if (opcionCambio("el nombre")) {
+            System.out.print("Nuevo nombre: ");
+            p.setNombre(sc.nextLine().trim());
+        }
+        if (opcionCambio("la marca")) {
+            System.out.print("Nueva marca: ");
+            p.setMarca(sc.nextLine().trim());
+        }
+        if (opcionCambio("la categoria")) {
+            List<Categoria> categorias = new CategoriaServiceImpl(new CategoriaDAO()).getAll();
+            for (Categoria c : categorias) System.out.println(c.getId() + ") " + c.getNombre());
+            System.out.print("Id de categoria: ");
+            int idCat = leerInt();
+            for (Categoria c : categorias) if (c.getId() == idCat) { p.setCategoria(c); break; }
+        }
+        if (opcionCambio("el precio")) {
+            System.out.print("Nuevo precio: ");
+            p.setPrecio(leerDouble());
+        }
+        if (opcionCambio("el peso")) {
+            System.out.print("Nuevo peso: ");
+            p.setPeso(leerDouble());
+        }
+        if (opcionCambio("el codigo de barras")) {
+            System.out.println("1) Asignar uno disponible");
+            System.out.println("2) Quitar codigo");
+            System.out.print("Opcion: ");
+            int op = leerInt();
+            if (op == 1) {
+                List<CodigoBarras> libres = codigoService.codigoBarrasDisponibles();
+                if (libres.isEmpty()) {
+                    System.out.println("No hay codigos disponibles.");
+                } else {
+                    for (CodigoBarras x : libres) System.out.println(x.getId() + ") " + x.getTipo() + " - " + x.getValor());
+                    System.out.print("Id de codigo: ");
+                    long idCb = leerInt();
+                    for (CodigoBarras x : libres) if (x.getId() == idCb) { p.setCodigoBarras(x); break; }
+                }
+            } else if (op == 2) {
+                p.setCodigoBarras(null);
+            }
+        }
+
+    productoService.actualizar(p);
+    System.out.println("Producto actualizado.");
+}
+
+    
+        //baja logica del producto
+        private static void productoEliminar() throws Exception {
+        System.out.print("Id del producto a eliminar: ");
+        long id = leerInt();
+        productoService.eliminar(id);
+        System.out.println("Producto eliminado.");
     }
 
-    //restaurar un producto dado de baja
-    private static void productoRecuperar() throws Exception {
-       
+
+        //restaurar un producto dado de baja
+        private static void productoRecuperar() throws Exception {
+        System.out.print("Id del producto a recuperar: ");
+        long id = leerInt();
+        productoService.recuperar(id);
+        System.out.println("Producto recuperado.");
     }
 
-    //Buscar producto por nombre
-    private static void productoBuscarPorNombre() throws Exception {
-       
+
+        //Buscar producto por nombre
+        private static void productoBuscarPorNombre() throws Exception {
+         System.out.print("Filtro de nombre: ");
+         String filtro = sc.nextLine().trim();
+         List<Producto> lista = productoService.buscarPorNombre(filtro);
+         if (lista.isEmpty()) System.out.println("Sin resultados.");
+         else for (Producto p : lista) System.out.println(p.toString());
+     }
+
+
+         //Buscar producto por codigo de barras
+        private static void productoBuscarPorCodigoBarras() throws Exception {
+        System.out.print("Valor de codigo de barras: ");
+        String valor = sc.nextLine().trim();
+        Producto p = productoService.buscarPorValorCodigoBarras(valor);
+        if (p == null) System.out.println("No se encontro producto con ese codigo.");
+        else System.out.println(p.toString());
     }
 
-    //Buscar producto por codigo de barras
-    private static void productoBuscarPorCodigoBarras() throws Exception {
-       
-    } 
 
-    //Buscar producto por ID
-    private static void productoBuscarPorID() throws Exception {
-        
+        //Buscar producto por ID
+        private static void productoBuscarPorID() throws Exception {
+        System.out.print("Id del producto: ");
+        long id = leerInt();
+        Producto p = productoService.getById(id);
+        if (p == null) System.out.println("No se encontro.");
+        else System.out.println(p.toString());
     }
+
 
     private static void menuCodigo() {
         int opcion;
@@ -200,41 +353,135 @@ public class AppMenu {
         } while (opcion != 0);
     }
     
-    //crea codigo de barras
-    private static void codigoCrear() throws Exception {
-       
+        //crea codigo de barras
+        private static void codigoCrear() throws Exception {
+        System.out.println("Crear codigo de barras");
+        System.out.println("Tipos: 1) EAN13  2) EAN8  3) UPC");
+        System.out.print("Opcion: ");
+        int t = leerInt();
+        TipoCodigoBarras tipo = switch (t) {
+            case 1 -> TipoCodigoBarras.EAN13;
+            case 2 -> TipoCodigoBarras.EAN8;
+            case 3 -> TipoCodigoBarras.UPC;
+            default -> null;
+        };
+        if (tipo == null) {
+            System.out.println("Tipo invalido.");
+            return;
+        }
+        System.out.print("Valor: ");
+        String valor = sc.nextLine().trim();
+        System.out.print("Observaciones: ");
+        String obs = sc.nextLine();
+        CodigoBarras cb = new CodigoBarras(tipo, valor, null, obs);
+        codigoService.insertar(cb);
+        System.out.println("Codigo creado con exito.");
     }
 
-    //Muestra todos los códigos activos
-    private static void codigosListar() throws Exception {
-       
-    }
-    
-    //actualizar codigo de barras
-    private static void codigoActualizar() throws Exception{
+
+        //Muestra todos los códigos activos de a 100 valores, si hay mas, te pregunta si queres verlos
         
-    }
+        private static void codigosListar() throws Exception {
+            List<CodigoBarras> lista = codigoService.getAll();
+
+            if (lista.isEmpty()) {
+                System.out.println("No hay códigos disponibles.");
+                return;
+            }
+
+            final int LIMITE = 1000;
+            int total = lista.size();
+            int indice = 0;
+
+            while (indice < total) {
+                int hasta = Math.min(indice + LIMITE, total);
+
+                for (int i = indice; i < hasta; i++) {
+                    System.out.println(lista.get(i).toString());
+                }
+
+                indice = hasta;
+
+                if (indice < total) {
+                    System.out.print("Desea ver los próximos " + LIMITE + " registros? (S/N): ");
+                    String respuesta = sc.nextLine().trim();
+                    if (!respuesta.equalsIgnoreCase("s")) {
+                        break;
+                    }
+                }
+            }
+        }
+
+
     
-    
-    //Baja lógica del código de barras
-    private static void codigoEliminar() throws Exception {
-       
+        //actualizar codigo de barras
+        private static void codigoActualizar() throws Exception {
+        System.out.print("Id del codigo a actualizar: ");
+        long id = leerInt();
+        CodigoBarras cb = codigoService.getById(id);
+        if (cb == null) {
+            System.out.println("No se encontro.");
+            return;
+        }
+        if (opcionCambio("el tipo")) {
+            System.out.println("Tipos: 1) EAN13  2) EAN8  3) UPC");
+            int t = leerInt();
+            if (t == 1) cb.setTipo(TipoCodigoBarras.EAN13);
+            else if (t == 2) cb.setTipo(TipoCodigoBarras.EAN8);
+            else if (t == 3) cb.setTipo(TipoCodigoBarras.UPC);
+        }
+        if (opcionCambio("el valor")) {
+            System.out.print("Nuevo valor: ");
+            cb.setValor(sc.nextLine().trim());
+        }
+        if (opcionCambio("las observaciones")) {
+            System.out.print("Nuevas observaciones: ");
+            cb.setObservaciones(sc.nextLine());
+        }
+        codigoService.actualizar(cb);
+        System.out.println("Codigo actualizado.");
     }
 
-    // Recupera un código eliminado
-    private static void codigoRecuperar() throws Exception {
-      }
+    
+    
+        //Baja lógica del código de barras
+        private static void codigoEliminar() throws Exception {
+        System.out.print("Id del codigo a eliminar: ");
+        long id = leerInt();
+        codigoService.eliminar(id);
+        System.out.println("Codigo eliminado.");
+    }
+
+
+        // Recupera un código eliminado
+        private static void codigoRecuperar() throws Exception {
+        System.out.print("Id del codigo a recuperar: ");
+        long id = leerInt();
+        codigoService.recuperar(id);
+        System.out.println("Codigo recuperado.");
+    }
+
 
     
-    // Muestra un código por ID
-    private static void codigoBuscarPorID() throws Exception {
-       
+        // Muestra un código por ID
+        private static void codigoBuscarPorID() throws Exception {
+        System.out.print("Id del codigo: ");
+        long id = leerInt();
+        CodigoBarras cb = codigoService.getById(id);
+        if (cb == null) System.out.println("No se encontro.");
+        else System.out.println(cb.toString());
     }
+
     
-    // Muestra un código por valor
-    private static void codigoBuscarPorValor() throws Exception {
-       
+        // Muestra un código por valor
+        private static void codigoBuscarPorValor() throws Exception {
+        System.out.print("Valor: ");
+        String v = sc.nextLine().trim();
+        CodigoBarras cb = codigoService.buscarPorValor(v);
+        if (cb == null) System.out.println("No se encontro.");
+        else System.out.println(cb.toString());
     }
+
 
     private static void menuCategoria() {
         int opcion;
@@ -274,25 +521,58 @@ public class AppMenu {
     }
 
     
-    // Crea una nueva categoría
-    private static void categoriaCrear() throws Exception {
-       
+     // Crea una nueva categoría
+        private static void categoriaCrear() throws Exception {
+        System.out.println("Crear categoria");
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine().trim();
+        System.out.print("Descripcion: ");
+        String desc = sc.nextLine();
+        Categoria c = new Categoria(nombre, desc);
+        new CategoriaServiceImpl(new CategoriaDAO()).insertar(c);
+        System.out.println("Categoria creada.");
     }
+
     
     //Lista todas las categorías existentes
-    private static void categoriasListar() throws Exception {
-   
+        private static void categoriasListar() throws Exception {
+        List<Categoria> lista = new CategoriaServiceImpl(new CategoriaDAO()).getAll();
+        if (lista.isEmpty()) System.out.println("No hay categorias.");
+        else for (Categoria c : lista) System.out.println(c.toString());
     }
-    
-    //actualziar categoria
-    private static void categoriaActualizar() throws Exception{
-    
-    }
-    
-    //Eliminar categoria. Baja fisica
-    private static void categoriaEliminar() throws Exception {
 
+    
+        //actualziar categoria
+        private static void categoriaActualizar() throws Exception {
+        System.out.print("Id de categoria a actualizar: ");
+        int id = leerInt();
+        CategoriaServiceImpl serv = new CategoriaServiceImpl(new CategoriaDAO());
+        Categoria c = serv.getById(id);
+        if (c == null) {
+            System.out.println("No se encontro.");
+            return;
+        }
+        if (opcionCambio("el nombre")) {
+            System.out.print("Nuevo nombre: ");
+            c.setNombre(sc.nextLine().trim());
+        }
+        if (opcionCambio("la descripcion")) {
+            System.out.print("Nueva descripcion: ");
+            c.setDescripcion(sc.nextLine());
+        }
+        serv.actualizar(c);
+        System.out.println("Categoria actualizada.");
     }
+
+    
+        //Eliminar categoria. Baja fisica
+        private static void categoriaEliminar() throws Exception {
+        System.out.print("Id de categoria a eliminar: ");
+        int id = leerInt();
+        new CategoriaServiceImpl(new CategoriaDAO()).eliminar(id);
+        System.out.println("Categoria eliminada.");
+    }
+
 
 
     private static void menuReporteria() {
@@ -328,18 +608,24 @@ public class AppMenu {
         } while (opcion != 0);
     }
     
-    private static void productosSinCodigo() throws Exception {
-        
+        private static void productosSinCodigo() throws Exception {
+        List<String> lista = productoService.productosSinCodigo();
+        if (lista.isEmpty()) System.out.println("Todos los productos tienen codigo.");
+        else for (String s : lista) System.out.println(s);
     }
+
     
-    private static void productoNombresDuplicados() throws Exception {
-        
+        private static void productoNombresDuplicados() throws Exception {
+        List<String> lista = productoService.productosDuplicados();
+        if (lista.isEmpty()) System.out.println("No hay nombres duplicados.");
+        else for (String s : lista) System.out.println(s);
     }
             
-    private static void codigoBarrasSinUsar() throws Exception {
-       
+        private static void codigoBarrasSinUsar() throws Exception {
+        List<CodigoBarras> lista = codigoService.codigoBarrasDisponibles();
+        if (lista.isEmpty()) System.out.println("No hay codigos sin usar.");
+        else for (CodigoBarras c : lista) System.out.println(c.toString());
     }
-    
     
     //Funcion que confirma con el usuario si desea actualizar un atributo
     private static boolean opcionCambio(String campo){
@@ -383,5 +669,13 @@ public class AppMenu {
                 System.out.print("Opción incorrecta. Ingrese nuevamente un número válido: "); 
             }
         }
+    }
+
+    private static Categoria categoriaCarga() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private static CodigoBarras codigoValidarExistenteLibre() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

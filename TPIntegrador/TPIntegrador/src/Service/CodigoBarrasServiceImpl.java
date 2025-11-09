@@ -137,4 +137,8 @@ public class CodigoBarrasServiceImpl implements GenericService<CodigoBarras> {
             throw new IllegalArgumentException("Las observaciones no pueden superar los 255 caracteres.");
         }
     }
+
+    public List<CodigoBarras> codigoBarras() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
