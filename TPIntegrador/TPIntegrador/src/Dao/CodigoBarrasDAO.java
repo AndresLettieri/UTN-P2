@@ -39,7 +39,11 @@ public class CodigoBarrasDAO implements GenericDAO<CodigoBarras> {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, cb.getTipo().name());
             stmt.setString(2, cb.getValor());
-            stmt.setDate(3, Date.valueOf(cb.getFechaAsignacion()));
+            if (cb.getFechaAsignacion() == null)
+                stmt.setDate(3, null);
+            else
+                stmt.setDate(3, Date.valueOf(cb.getFechaAsignacion()));
+
             stmt.setString(4, cb.getObservaciones());
             stmt.setLong(5, cb.getId());
             stmt.executeUpdate();

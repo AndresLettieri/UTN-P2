@@ -8,6 +8,14 @@ public class DatabaseConnection {
     private static final String USER = "root";
     private static final String PASSWORD = "12345678";
     private static Connection connection = null;
+    
+    static{ 
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e){
+            throw new RuntimeException("Error: No se encontró el driver JDBC");
+        }
+    }
 
     // Método para obtener la conexión
     public static Connection getConnection() {
