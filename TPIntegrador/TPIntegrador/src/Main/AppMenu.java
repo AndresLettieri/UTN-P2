@@ -119,9 +119,9 @@ public class AppMenu {
         System.out.print("Ingrese marca (opcional): ");
         String marca = sc.nextLine().trim();
         System.out.print("Ingrese precio: ");
-        double precio = leerDouble();
+        double precio = leerDouble(false);
         System.out.print("ingrese Peso (opcional): ");
-        double peso = leerDouble();
+        double peso = leerDouble(true);
         
         Categoria categoria = categoriaCarga();
         
@@ -164,7 +164,7 @@ public class AppMenu {
         
     
 
-        //Listar todos los productos activos (no eliminados) te va a mostrar de a 100 productos, si necesitas ver otros 100 hay que aceptar.
+    //Listar todos los productos activos (no eliminados) te va a mostrar de a 100 productos, si necesitas ver otros 100 hay que aceptar.
     private static void productosListar() throws Exception {
         List<Producto> lista = productoService.getAll();
 
@@ -225,11 +225,11 @@ public class AppMenu {
         }
         if (opcionCambio("el precio")) {
             System.out.print("Nuevo precio: ");
-            p.setPrecio(leerDouble());
+            p.setPrecio(leerDouble(false));
         }
         if (opcionCambio("el peso")) {
             System.out.print("Nuevo peso: ");
-            p.setPeso(leerDouble());
+            p.setPeso(leerDouble(true));
         }
         if (opcionCambio("el codigo de barras")) {
             System.out.println("1) Asignar uno disponible");
@@ -683,11 +683,16 @@ public class AppMenu {
         }
     }
 
-    //funcion para double
-    private static double leerDouble() {
+    //funcion para double opcional
+    private static double leerDouble(boolean bOpcional) {
         while (true) {
+            String input = sc.nextLine().trim();
+
+            if (bOpcional && input.isEmpty()) {
+                return 0;
+            }
             try { 
-                return Double.parseDouble(sc.nextLine().trim()); 
+                return Double.parseDouble(input); 
             }
             catch (NumberFormatException e) { 
                 System.out.print("Opción incorrecta. Ingrese nuevamente un número válido: "); 

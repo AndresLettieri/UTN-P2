@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/fabrica";
-    private static final String USER = "root";
-    private static final String PASSWORD = "12345678";
+    private static String user;
+    private static String password;
     private static Connection connection = null;
     
     static{ 
@@ -17,17 +17,27 @@ public class DatabaseConnection {
         }
     }
 
+    public static void setCredentials(String user, String password) {
+        DatabaseConnection.user = user;
+        DatabaseConnection.password = password;
+    }
+        
     // Método para obtener la conexión
     public static Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                connection = DriverManager.getConnection(URL, user, password);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getSQLState() != null) {
+                if (!e.getSQLState().equals("28000")){
+                    e.printStackTrace();
+                }
+            }
         }
         return connection;
     }
+    
 
     // Método para cerrar la conexión
     public static void closeConnection() {
